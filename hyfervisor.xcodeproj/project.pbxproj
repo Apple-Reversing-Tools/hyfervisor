@@ -1,0 +1,843 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8F87D52126C34111000EADA4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F87D52026C34111000EADA4 /* AppDelegate.swift */; };
+		8F87D52326C34111000EADA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F87D52226C34111000EADA4 /* Assets.xcassets */; };
+		8F87D52626C34111000EADA4 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8F87D52426C34111000EADA4 /* MainMenu.xib */; };
+		8F87D53426C341AC000EADA4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F87D53326C341AC000EADA4 /* main.swift */; };
+		8F87D53A26C3423F000EADA4 /* MacOSVirtualMachineInstaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F87D53926C3423F000EADA4 /* MacOSVirtualMachineInstaller.swift */; };
+		8F87D53F26C34259000EADA4 /* Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F87D53C26C34259000EADA4 /* Path.swift */; };
+		8F87D54026C34259000EADA4 /* MacOSVirtualMachineConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F87D53D26C34259000EADA4 /* MacOSVirtualMachineConfigurationHelper.swift */; };
+		8F87D54126C34259000EADA4 /* MacOSVirtualMachineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F87D53E26C34259000EADA4 /* MacOSVirtualMachineDelegate.swift */; };
+		8F87D54226C34262000EADA4 /* Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F87D53C26C34259000EADA4 /* Path.swift */; };
+		8F87D54326C34265000EADA4 /* MacOSVirtualMachineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F87D53E26C34259000EADA4 /* MacOSVirtualMachineDelegate.swift */; };
+		8F87D54426C34269000EADA4 /* MacOSVirtualMachineConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F87D53D26C34259000EADA4 /* MacOSVirtualMachineConfigurationHelper.swift */; };
+		8F87D54726C3427C000EADA4 /* Virtualization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F87D54626C3427C000EADA4 /* Virtualization.framework */; };
+		8F87D54826C34286000EADA4 /* Virtualization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F87D54626C3427C000EADA4 /* Virtualization.framework */; };
+		8F87D54E26C344C4000EADA4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8F87D54D26C344C4000EADA4 /* README.md */; };
+		8FB90BEE26D5AC8100988F51 /* MacOSRestoreImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB90BED26D5AC8100988F51 /* MacOSRestoreImage.swift */; };
+		8FDABC3E270D1DC600D7FC60 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC3D270D1DC600D7FC60 /* AppDelegate.m */; };
+		8FDABC40270D1DC600D7FC60 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FDABC3F270D1DC600D7FC60 /* Assets.xcassets */; };
+		8FDABC43270D1DC600D7FC60 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8FDABC41270D1DC600D7FC60 /* MainMenu.xib */; };
+		8FDABC45270D1DC600D7FC60 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC44270D1DC600D7FC60 /* main.m */; };
+		8FDABC53270D1F2200D7FC60 /* HyfervisorConfigurationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC4F270D1F0300D7FC60 /* HyfervisorConfigurationHelper.m */; };
+		8FDABC54270D1F2800D7FC60 /* HyfervisorDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC50270D1F0300D7FC60 /* HyfervisorDelegate.m */; };
+		8FDABC5C270D1FFE00D7FC60 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC5B270D1FFE00D7FC60 /* main.m */; };
+		8FDABC64270D20F600D7FC60 /* MacOSRestoreImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC60270D20F600D7FC60 /* MacOSRestoreImage.m */; };
+		8FDABC65270D20F600D7FC60 /* HyfervisorInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC62270D20F600D7FC60 /* HyfervisorInstaller.m */; };
+		8FDABC66270D212F00D7FC60 /* HyfervisorConfigurationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC4F270D1F0300D7FC60 /* HyfervisorConfigurationHelper.m */; };
+		8FDABC67270D213200D7FC60 /* HyfervisorDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC50270D1F0300D7FC60 /* HyfervisorDelegate.m */; };
+		FCDA60BA2A04826200872072 /* Virtualization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F87D54626C3427C000EADA4 /* Virtualization.framework */; };
+		FCDA60BB2A04826B00872072 /* Virtualization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F87D54626C3427C000EADA4 /* Virtualization.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8F87D52F26C341AC000EADA4 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		8FDABC57270D1FFE00D7FC60 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		8F87D51D26C34111000EADA4 /* macOSVirtualMachineSampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = macOSVirtualMachineSampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F87D52026C34111000EADA4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8F87D52226C34111000EADA4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8F87D52526C34111000EADA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		8F87D53126C341AC000EADA4 /* InstallationTool-Swift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "InstallationTool-Swift"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F87D53326C341AC000EADA4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		8F87D53826C3423F000EADA4 /* InstallationTool.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = InstallationTool.entitlements; sourceTree = "<group>"; };
+		8F87D53926C3423F000EADA4 /* MacOSVirtualMachineInstaller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacOSVirtualMachineInstaller.swift; sourceTree = "<group>"; };
+		8F87D53B26C34250000EADA4 /* hyfervisor.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = hyfervisor.entitlements; sourceTree = "<group>"; };
+		8F87D53C26C34259000EADA4 /* Path.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Path.swift; sourceTree = "<group>"; };
+		8F87D53D26C34259000EADA4 /* MacOSVirtualMachineConfigurationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacOSVirtualMachineConfigurationHelper.swift; sourceTree = "<group>"; };
+		8F87D53E26C34259000EADA4 /* MacOSVirtualMachineDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacOSVirtualMachineDelegate.swift; sourceTree = "<group>"; };
+		8F87D54626C3427C000EADA4 /* Virtualization.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Virtualization.framework; path = System/Library/Frameworks/Virtualization.framework; sourceTree = SDKROOT; };
+		8F87D54D26C344C4000EADA4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8FB90BE826D422FD00988F51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8FB90BED26D5AC8100988F51 /* MacOSRestoreImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacOSRestoreImage.swift; sourceTree = "<group>"; };
+		8FDABC3A270D1DC600D7FC60 /* macOSVirtualMachineSampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = macOSVirtualMachineSampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FDABC3C270D1DC600D7FC60 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		8FDABC3D270D1DC600D7FC60 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		8FDABC3F270D1DC600D7FC60 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8FDABC42270D1DC600D7FC60 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		8FDABC44270D1DC600D7FC60 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8FDABC4B270D1F0300D7FC60 /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Error.h; sourceTree = "<group>"; };
+		8FDABC4C270D1F0300D7FC60 /* HyfervisorConfigurationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HyfervisorConfigurationHelper.h; sourceTree = "<group>"; };
+		8FDABC4D270D1F0300D7FC60 /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path.h; sourceTree = "<group>"; };
+		8FDABC4E270D1F0300D7FC60 /* HyfervisorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HyfervisorDelegate.h; sourceTree = "<group>"; };
+		8FDABC4F270D1F0300D7FC60 /* HyfervisorConfigurationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HyfervisorConfigurationHelper.m; sourceTree = "<group>"; };
+		8FDABC50270D1F0300D7FC60 /* HyfervisorDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HyfervisorDelegate.m; sourceTree = "<group>"; };
+		8FDABC59270D1FFE00D7FC60 /* hyfervisor-InstallationTool-Objective-C */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "hyfervisor-InstallationTool-Objective-C"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FDABC5B270D1FFE00D7FC60 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8FDABC60270D20F600D7FC60 /* MacOSRestoreImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacOSRestoreImage.m; sourceTree = "<group>"; };
+		8FDABC61270D20F600D7FC60 /* HyfervisorInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HyfervisorInstaller.h; sourceTree = "<group>"; };
+		8FDABC62270D20F600D7FC60 /* HyfervisorInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HyfervisorInstaller.m; sourceTree = "<group>"; };
+		8FDABC63270D20F600D7FC60 /* MacOSRestoreImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacOSRestoreImage.h; sourceTree = "<group>"; };
+		8FDABC68270D21A500D7FC60 /* hyfervisor-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = hyfervisor-Info.plist; sourceTree = "<group>"; };
+		B0E246092DFBF28FAEA2709F /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE.txt; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8F87D51A26C34111000EADA4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F87D54826C34286000EADA4 /* Virtualization.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8F87D52E26C341AC000EADA4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F87D54726C3427C000EADA4 /* Virtualization.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8FDABC37270D1DC600D7FC60 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCDA60BA2A04826200872072 /* Virtualization.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8FDABC56270D1FFE00D7FC60 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCDA60BB2A04826B00872072 /* Virtualization.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		09E329497FB7E44895839D88 /* LICENSE */ = {
+			isa = PBXGroup;
+			children = (
+				B0E246092DFBF28FAEA2709F /* LICENSE.txt */,
+			);
+			name = LICENSE;
+			path = .;
+			sourceTree = "<group>";
+		};
+		3026A0D16D3A077128FE4194 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
+		8F87D51426C34111000EADA4 = {
+			isa = PBXGroup;
+			children = (
+				8F87D54D26C344C4000EADA4 /* README.md */,
+				8F87D53B26C34250000EADA4 /* hyfervisor.entitlements */,
+				8F87D53826C3423F000EADA4 /* InstallationTool.entitlements */,
+				8FDABC18270D156000D7FC60 /* Objective-C */,
+				8FDABC17270D0F9100D7FC60 /* Swift */,
+				8F87D51E26C34111000EADA4 /* Products */,
+				8F87D54526C3427C000EADA4 /* Frameworks */,
+				3026A0D16D3A077128FE4194 /* Configuration */,
+				09E329497FB7E44895839D88 /* LICENSE */,
+			);
+			sourceTree = "<group>";
+		};
+		8F87D51E26C34111000EADA4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8F87D51D26C34111000EADA4 /* macOSVirtualMachineSampleApp.app */,
+				8F87D53126C341AC000EADA4 /* InstallationTool-Swift */,
+				8FDABC3A270D1DC600D7FC60 /* macOSVirtualMachineSampleApp.app */,
+				8FDABC59270D1FFE00D7FC60 /* InstallationTool-Objective-C */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8F87D51F26C34111000EADA4 /* hyfervisor */ = {
+			isa = PBXGroup;
+			children = (
+				8F87D52026C34111000EADA4 /* AppDelegate.swift */,
+				8F87D52226C34111000EADA4 /* Assets.xcassets */,
+				8F87D52426C34111000EADA4 /* MainMenu.xib */,
+				8FB90BE826D422FD00988F51 /* Info.plist */,
+			);
+			path = hyfervisor;
+			sourceTree = "<group>";
+		};
+		8F87D52C26C3418F000EADA4 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				8F87D53D26C34259000EADA4 /* MacOSVirtualMachineConfigurationHelper.swift */,
+				8F87D53E26C34259000EADA4 /* MacOSVirtualMachineDelegate.swift */,
+				8F87D53C26C34259000EADA4 /* Path.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		8F87D53226C341AC000EADA4 /* InstallationTool */ = {
+			isa = PBXGroup;
+			children = (
+				8FB90BED26D5AC8100988F51 /* MacOSRestoreImage.swift */,
+				8F87D53926C3423F000EADA4 /* MacOSVirtualMachineInstaller.swift */,
+				8F87D53326C341AC000EADA4 /* main.swift */,
+			);
+			path = InstallationTool;
+			sourceTree = "<group>";
+		};
+		8F87D54526C3427C000EADA4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8F87D54626C3427C000EADA4 /* Virtualization.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8FDABC17270D0F9100D7FC60 /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				8F87D52C26C3418F000EADA4 /* Common */,
+				8F87D51F26C34111000EADA4 /* macOSVirtualMachineSampleApp */,
+				8F87D53226C341AC000EADA4 /* InstallationTool */,
+			);
+			path = Swift;
+			sourceTree = "<group>";
+		};
+		8FDABC18270D156000D7FC60 /* Objective-C */ = {
+			isa = PBXGroup;
+			children = (
+				8FDABC4A270D1F0300D7FC60 /* Common */,
+				8FDABC3B270D1DC600D7FC60 /* macOSVirtualMachineSampleApp */,
+				8FDABC5A270D1FFE00D7FC60 /* InstallationTool */,
+			);
+			path = "Objective-C";
+			sourceTree = "<group>";
+		};
+		8FDABC3B270D1DC600D7FC60 /* hyfervisor */ = {
+			isa = PBXGroup;
+			children = (
+				8FDABC3C270D1DC600D7FC60 /* AppDelegate.h */,
+				8FDABC3D270D1DC600D7FC60 /* AppDelegate.m */,
+				8FDABC3F270D1DC600D7FC60 /* Assets.xcassets */,
+				8FDABC41270D1DC600D7FC60 /* MainMenu.xib */,
+				8FDABC44270D1DC600D7FC60 /* main.m */,
+				8FDABC68270D21A500D7FC60 /* hyfervisor-Info.plist */,
+			);
+			path = hyfervisor;
+			sourceTree = "<group>";
+		};
+		8FDABC4A270D1F0300D7FC60 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				8FDABC4B270D1F0300D7FC60 /* Error.h */,
+				8FDABC4C270D1F0300D7FC60 /* HyfervisorConfigurationHelper.h */,
+				8FDABC4F270D1F0300D7FC60 /* HyfervisorConfigurationHelper.m */,
+				8FDABC4E270D1F0300D7FC60 /* HyfervisorDelegate.h */,
+				8FDABC50270D1F0300D7FC60 /* HyfervisorDelegate.m */,
+				8FDABC4D270D1F0300D7FC60 /* Path.h */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		8FDABC5A270D1FFE00D7FC60 /* InstallationTool */ = {
+			isa = PBXGroup;
+			children = (
+				8FDABC63270D20F600D7FC60 /* MacOSRestoreImage.h */,
+				8FDABC60270D20F600D7FC60 /* MacOSRestoreImage.m */,
+				8FDABC61270D20F600D7FC60 /* HyfervisorInstaller.h */,
+				8FDABC62270D20F600D7FC60 /* HyfervisorInstaller.m */,
+				8FDABC5B270D1FFE00D7FC60 /* main.m */,
+			);
+			path = InstallationTool;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8F87D51C26C34111000EADA4 /* hyfervisor-Swift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8F87D52926C34111000EADA4 /* Build configuration list for PBXNativeTarget "hyfervisor-Swift" */;
+			buildPhases = (
+				8F87D51926C34111000EADA4 /* Sources */,
+				8F87D51A26C34111000EADA4 /* Frameworks */,
+				8F87D51B26C34111000EADA4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "hyfervisor-Swift";
+			productName = hyfervisor;
+			productReference = 8F87D51D26C34111000EADA4 /* macOSVirtualMachineSampleApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8F87D53026C341AC000EADA4 /* InstallationTool-Swift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8F87D53526C341AC000EADA4 /* Build configuration list for PBXNativeTarget "InstallationTool-Swift" */;
+			buildPhases = (
+				8F87D52D26C341AC000EADA4 /* Sources */,
+				8F87D52E26C341AC000EADA4 /* Frameworks */,
+				8F87D52F26C341AC000EADA4 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "InstallationTool-Swift";
+			productName = InstallationTool;
+			productReference = 8F87D53126C341AC000EADA4 /* InstallationTool-Swift */;
+			productType = "com.apple.product-type.tool";
+		};
+		8FDABC39270D1DC600D7FC60 /* hyfervisor-Objective-C */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8FDABC47270D1DC600D7FC60 /* Build configuration list for PBXNativeTarget "hyfervisor-Objective-C" */;
+			buildPhases = (
+				8FDABC36270D1DC600D7FC60 /* Sources */,
+				8FDABC37270D1DC600D7FC60 /* Frameworks */,
+				8FDABC38270D1DC600D7FC60 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "hyfervisor-Objective-C";
+			productName = "hyfervisor-Objective-C";
+			productReference = 8FDABC3A270D1DC600D7FC60 /* macOSVirtualMachineSampleApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8FDABC58270D1FFE00D7FC60 /* hyfervisor-InstallationTool-Objective-C */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8FDABC5D270D1FFE00D7FC60 /* Build configuration list for PBXNativeTarget "hyfervisor-InstallationTool-Objective-C" */;
+			buildPhases = (
+				8FDABC55270D1FFE00D7FC60 /* Sources */,
+				8FDABC56270D1FFE00D7FC60 /* Frameworks */,
+				8FDABC57270D1FFE00D7FC60 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "hyfervisor-InstallationTool-Objective-C";
+			productName = "hyfervisor-InstallationTool-Objective-C";
+			productReference = 8FDABC59270D1FFE00D7FC60 /* hyfervisor-InstallationTool-Objective-C */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8F87D51526C34111000EADA4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				DefaultBuildSystemTypeForWorkspace = Latest;
+				LastSwiftUpdateCheck = 1300;
+				LastUpgradeCheck = 1300;
+				ORGANIZATIONNAME = Apple;
+				TargetAttributes = {
+					8F87D51C26C34111000EADA4 = {
+						CreatedOnToolsVersion = 13.0;
+					};
+					8F87D53026C341AC000EADA4 = {
+						CreatedOnToolsVersion = 13.0;
+					};
+					8FDABC39270D1DC600D7FC60 = {
+						CreatedOnToolsVersion = 13.2;
+					};
+					8FDABC58270D1FFE00D7FC60 = {
+						CreatedOnToolsVersion = 13.2;
+					};
+				};
+			};
+			buildConfigurationList = 8F87D51826C34111000EADA4 /* Build configuration list for PBXProject "macOSVirtualMachineSampleApp" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8F87D51426C34111000EADA4;
+			productRefGroup = 8F87D51E26C34111000EADA4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8F87D51C26C34111000EADA4 /* macOSVirtualMachineSampleApp-Swift */,
+				8F87D53026C341AC000EADA4 /* InstallationTool-Swift */,
+				8FDABC39270D1DC600D7FC60 /* macOSVirtualMachineSampleApp-Objective-C */,
+				8FDABC58270D1FFE00D7FC60 /* InstallationTool-Objective-C */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8F87D51B26C34111000EADA4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F87D54E26C344C4000EADA4 /* README.md in Resources */,
+				8F87D52326C34111000EADA4 /* Assets.xcassets in Resources */,
+				8F87D52626C34111000EADA4 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8FDABC38270D1DC600D7FC60 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8FDABC40270D1DC600D7FC60 /* Assets.xcassets in Resources */,
+				8FDABC43270D1DC600D7FC60 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8F87D51926C34111000EADA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F87D53F26C34259000EADA4 /* Path.swift in Sources */,
+				8F87D52126C34111000EADA4 /* AppDelegate.swift in Sources */,
+				8F87D54126C34259000EADA4 /* MacOSVirtualMachineDelegate.swift in Sources */,
+				8F87D54026C34259000EADA4 /* MacOSVirtualMachineConfigurationHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8F87D52D26C341AC000EADA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F87D54426C34269000EADA4 /* MacOSVirtualMachineConfigurationHelper.swift in Sources */,
+				8F87D53A26C3423F000EADA4 /* MacOSVirtualMachineInstaller.swift in Sources */,
+				8FB90BEE26D5AC8100988F51 /* MacOSRestoreImage.swift in Sources */,
+				8F87D54226C34262000EADA4 /* Path.swift in Sources */,
+				8F87D54326C34265000EADA4 /* MacOSVirtualMachineDelegate.swift in Sources */,
+				8F87D53426C341AC000EADA4 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8FDABC36270D1DC600D7FC60 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8FDABC45270D1DC600D7FC60 /* main.m in Sources */,
+				8FDABC53270D1F2200D7FC60 /* MacOSVirtualMachineConfigurationHelper.m in Sources */,
+				8FDABC54270D1F2800D7FC60 /* MacOSVirtualMachineDelegate.m in Sources */,
+				8FDABC3E270D1DC600D7FC60 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8FDABC55270D1FFE00D7FC60 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8FDABC65270D20F600D7FC60 /* MacOSVirtualMachineInstaller.m in Sources */,
+				8FDABC67270D213200D7FC60 /* MacOSVirtualMachineDelegate.m in Sources */,
+				8FDABC64270D20F600D7FC60 /* MacOSRestoreImage.m in Sources */,
+				8FDABC66270D212F00D7FC60 /* MacOSVirtualMachineConfigurationHelper.m in Sources */,
+				8FDABC5C270D1FFE00D7FC60 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8F87D52426C34111000EADA4 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8F87D52526C34111000EADA4 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		8FDABC41270D1DC600D7FC60 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8FDABC42270D1DC600D7FC60 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8F87D52726C34111000EADA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8F87D52826C34111000EADA4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		8F87D52A26C34111000EADA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = hyfervisor.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Swift/macOSVirtualMachineSampleApp/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.apple.hyfervisor";
+				PRODUCT_NAME = hyfervisor;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		8F87D52B26C34111000EADA4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = hyfervisor.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Swift/macOSVirtualMachineSampleApp/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.apple.hyfervisor";
+				PRODUCT_NAME = hyfervisor;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		8F87D53626C341AC000EADA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = InstallationTool.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.apple.hyfervisor";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		8F87D53726C341AC000EADA4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = InstallationTool.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.apple.hyfervisor";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		8FDABC48270D1DC600D7FC60 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = hyfervisor.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Objective-C/hyfervisor/hyfervisor-Info.plist";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.apple.hyfervisor-Objective-C";
+				PRODUCT_NAME = hyfervisor;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
+		8FDABC49270D1DC600D7FC60 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = hyfervisor.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Objective-C/hyfervisor/hyfervisor-Info.plist";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.apple.hyfervisor-Objective-C";
+				PRODUCT_NAME = hyfervisor;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Release;
+		};
+		8FDABC5E270D1FFE00D7FC60 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = InstallationTool.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+			};
+			name = Debug;
+		};
+		8FDABC5F270D1FFE00D7FC60 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = InstallationTool.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8F87D51826C34111000EADA4 /* Build configuration list for PBXProject "macOSVirtualMachineSampleApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8F87D52726C34111000EADA4 /* Debug */,
+				8F87D52826C34111000EADA4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8F87D52926C34111000EADA4 /* Build configuration list for PBXNativeTarget "macOSVirtualMachineSampleApp-Swift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8F87D52A26C34111000EADA4 /* Debug */,
+				8F87D52B26C34111000EADA4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8F87D53526C341AC000EADA4 /* Build configuration list for PBXNativeTarget "InstallationTool-Swift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8F87D53626C341AC000EADA4 /* Debug */,
+				8F87D53726C341AC000EADA4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8FDABC47270D1DC600D7FC60 /* Build configuration list for PBXNativeTarget "macOSVirtualMachineSampleApp-Objective-C" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8FDABC48270D1DC600D7FC60 /* Debug */,
+				8FDABC49270D1DC600D7FC60 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8FDABC5D270D1FFE00D7FC60 /* Build configuration list for PBXNativeTarget "InstallationTool-Objective-C" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8FDABC5E270D1FFE00D7FC60 /* Debug */,
+				8FDABC5F270D1FFE00D7FC60 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8F87D51526C34111000EADA4 /* Project object */;
+}
