@@ -22,6 +22,8 @@ The helper that creates various configuration objects exposed in the `VZVirtualM
 + (uint64_t)computeMemorySize;
 
 + (VZMacOSBootLoader *)createBootLoader;
++ (VZMacOSBootLoader *)createBootLoaderWithAVPBooterPath:(NSString *)avpBooterPath;
++ (BOOL)validateAVPBooterPath:(NSString *)avpBooterPath error:(NSError **)error;
 
 + (VZVirtioBlockDeviceConfiguration *)createBlockDeviceConfiguration;
 + (VZMacGraphicsDeviceConfiguration *)createGraphicsDeviceConfiguration;

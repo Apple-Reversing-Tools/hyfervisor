@@ -188,6 +188,13 @@
                                                 <action selector="showAudioSettings:" target="Voe-Tx-rLC" id="audio-settings-action"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="hardware-separator-3"/>
+                                        <menuItem title="AVPBooter Settings…" id="avpbooter-settings">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="showAVPBooterSettings:" target="Voe-Tx-rLC" id="avpbooter-settings-action"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

@@ -10,11 +10,13 @@ The app delegate that sets up and starts the virtual machine.
 #import "Error.h"
 #import "HyfervisorConfigurationHelper.h"
 #import "HyfervisorDelegate.h"
+#import "HyfervisorConfigManager.h"
 #import "Path.h"
 
 #import <Virtualization/Virtualization.h>
 #import <objc/runtime.h>
 #import <objc/message.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 // Debug stub protocols (based on VirtualApple implementation)
 @protocol _VZGDBDebugStubConfiguration <NSObject>
@@ -31,19 +33,8 @@ The app delegate that sets up and starts the virtual machine.
 
 @property (strong) IBOutlet NSWindow *window;
 
-// Hardware Configuration Properties (based on super-tart and VirtualApple)
-@property (nonatomic, assign) NSInteger cpuCount;
-@property (nonatomic, assign) UInt64 memorySize;
-@property (nonatomic, assign) NSInteger displayWidth;
-@property (nonatomic, assign) NSInteger displayHeight;
-@property (nonatomic, assign) NSInteger debugPort;
-@property (nonatomic, assign) BOOL debugEnabled;
-@property (nonatomic, assign) BOOL consoleEnabled;
-@property (nonatomic, assign) BOOL panicDeviceEnabled;
-@property (nonatomic, assign) BOOL audioEnabled;
-@property (nonatomic, assign) BOOL networkEnabled;
-@property (nonatomic, strong) NSString *networkInterface;
-@property (nonatomic, assign) UInt64 diskSize;
+// Configuration Manager
+@property (nonatomic, strong) HyfervisorConfigManager *configManager;
 
 - (IBAction)normalRestart:(id)sender;
 - (IBAction)recoveryRestart:(id)sender;
@@ -53,6 +44,15 @@ The app delegate that sets up and starts the virtual machine.
 @implementation AppDelegate {
     VZVirtualMachine *_virtualMachine;
     HyfervisorDelegate *_delegate;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.configManager = [HyfervisorConfigManager sharedManager];
+    }
+    return self;
 }
 
 #ifdef __arm64__
@@ -108,27 +108,27 @@ The app delegate that sets up and starts the virtual machine.
     VZVirtualMachineConfiguration *configuration = [VZVirtualMachineConfiguration new];
 
     configuration.platform = [self createMacPlatformConfiguration];
-    configuration.CPUCount = self.cpuCount;  // Use user-configured CPU count
-    configuration.memorySize = self.memorySize;  // Use user-configured memory size
+    configuration.CPUCount = self.configManager.cpuCount;  // Use user-configured CPU count
+    configuration.memorySize = self.configManager.memorySize;  // Use user-configured memory size
 
-    configuration.bootLoader = [HyfervisorConfigurationHelper createBootLoader];
+    configuration.bootLoader = [HyfervisorConfigurationHelper createBootLoaderWithAVPBooterPath:self.configManager.avpBooterPath];
 
     // Audio devices (based on user settings)
-    if (self.audioEnabled) {
+    if (self.configManager.audioEnabled) {
         configuration.audioDevices = @[ [HyfervisorConfigurationHelper createSoundDeviceConfiguration] ];
     }
     
     // Graphics devices (based on user settings and super-tart implementation)
     VZMacGraphicsDeviceConfiguration *graphicsConfiguration = [[VZMacGraphicsDeviceConfiguration alloc] init];
     graphicsConfiguration.displays = @[
-        [[VZMacGraphicsDisplayConfiguration alloc] initWithWidthInPixels:self.displayWidth 
-                                                         heightInPixels:self.displayHeight 
+        [[VZMacGraphicsDisplayConfiguration alloc] initWithWidthInPixels:self.configManager.displayWidth 
+                                                         heightInPixels:self.configManager.displayHeight 
                                                           pixelsPerInch:80]
     ];
     configuration.graphicsDevices = @[ graphicsConfiguration ];
     
     // Network devices (based on user settings)
-    if (self.networkEnabled) {
+    if (self.configManager.networkEnabled) {
         configuration.networkDevices = @[ [HyfervisorConfigurationHelper createNetworkDeviceConfiguration] ];
     }
     configuration.storageDevices = @[ [HyfervisorConfigurationHelper createBlockDeviceConfiguration] ];
@@ -137,17 +137,17 @@ The app delegate that sets up and starts the virtual machine.
     configuration.keyboards = @[ [HyfervisorConfigurationHelper createKeyboardConfiguration] ];
     
     // Setup console device (based on super-tart implementation and user settings)
-    if (self.consoleEnabled) {
+    if (self.configManager.consoleEnabled) {
         [self setupConsoleDeviceForConfiguration:configuration];
     }
     
     // Setup debug stub (based on super-tart implementation and user settings)
-    if (self.debugEnabled) {
+    if (self.configManager.debugEnabled) {
         [self setupDebugStubForConfiguration:configuration];
     }
     
     // Setup panic device (needed on macOS 14+ when setPanicAction is enabled) - super-tart method
-    if (@available(macOS 14, *) && self.panicDeviceEnabled) {
+    if (@available(macOS 14, *) && self.configManager.panicDeviceEnabled) {
         [self setupPanicDeviceForConfiguration:configuration];
     }
     
@@ -171,7 +171,7 @@ The app delegate that sets up and starts the virtual machine.
 
 - (void)setupDebugStubForConfiguration:(VZVirtualMachineConfiguration *)configuration
 {
-    NSLog(@"Setting up debug stub on port %ld...", (long)self.debugPort);
+    NSLog(@"Setting up debug stub on port %ld...", (long)self.configManager.debugPort);
     
     @try {
         // Use super-tart method: Dynamic._VZGDBDebugStubConfiguration(port:)
@@ -183,8 +183,8 @@ The app delegate that sets up and starts the virtual machine.
         }
         
         // Create debug stub instance with user-configured port (super-tart method)
-        // This is equivalent to: debugStub.port = self.debugPort
-        id debugStub = [[debugStubClass alloc] initWithPort:self.debugPort];
+        // This is equivalent to: debugStub.port = self.configManager.debugPort
+        id debugStub = [[debugStubClass alloc] initWithPort:self.configManager.debugPort];
         if (!debugStub) {
             NSLog(@"Warning: Failed to create debug stub instance");
             return;
@@ -434,8 +434,8 @@ The app delegate that sets up and starts the virtual machine.
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 #ifdef __arm64__
-    // Initialize hardware configuration with default values (based on super-tart and VirtualApple)
-    [self initializeHardwareConfiguration];
+    // Load configuration from file
+    [self.configManager loadConfiguration];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self createVirtualMachine];
@@ -512,23 +512,11 @@ The app delegate that sets up and starts the virtual machine.
     return NSTerminateNow;
 }
 
-// MARK: Hardware Configuration Initialization
+// MARK: Configuration Management
 
-- (void)initializeHardwareConfiguration
+- (void)saveConfiguration
 {
-    // Default values based on super-tart and VirtualApple
-    self.cpuCount = 4;  // Default CPU count
-    self.memorySize = 4ULL * 1024 * 1024 * 1024;  // 4GB default memory
-    self.displayWidth = 1024;  // Default display width (super-tart default)
-    self.displayHeight = 768;  // Default display height (super-tart default)
-    self.debugPort = 8000;  // Default debug port (super-tart default)
-    self.debugEnabled = YES;  // Debug enabled by default
-    self.consoleEnabled = YES;  // Console enabled by default
-    self.panicDeviceEnabled = YES;  // Panic device enabled by default (macOS 14+)
-    self.audioEnabled = YES;  // Audio enabled by default
-    self.networkEnabled = YES;  // Network enabled by default
-    self.networkInterface = @"en0";  // Default network interface
-    self.diskSize = 64ULL * 1024 * 1024 * 1024;  // 64GB default disk size
+    [self.configManager saveConfiguration];
 }
 
 // MARK: Hardware Configuration Actions
@@ -538,7 +526,7 @@ The app delegate that sets up and starts the virtual machine.
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"CPU Settings";
     alert.informativeText = [NSString stringWithFormat:@"Current CPU Count: %ld\nMaximum Available: %ld", 
-                            (long)self.cpuCount, (long)[[NSProcessInfo processInfo] activeProcessorCount]];
+                            (long)self.configManager.cpuCount, (long)[[NSProcessInfo processInfo] activeProcessorCount]];
     
     [alert addButtonWithTitle:@"OK"];
     [alert addButtonWithTitle:@"Change"];
@@ -554,7 +542,7 @@ The app delegate that sets up and starts the virtual machine.
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"Memory Settings";
     alert.informativeText = [NSString stringWithFormat:@"Current Memory: %.1f GB\nMaximum Available: %.1f GB", 
-                            (double)self.memorySize / (1024*1024*1024), 
+                            (double)self.configManager.memorySize / (1024*1024*1024), 
                             (double)[[NSProcessInfo processInfo] physicalMemory] / (1024*1024*1024)];
     
     [alert addButtonWithTitle:@"OK"];
@@ -571,7 +559,7 @@ The app delegate that sets up and starts the virtual machine.
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"Display Settings";
     alert.informativeText = [NSString stringWithFormat:@"Current Resolution: %ld x %ld", 
-                            (long)self.displayWidth, (long)self.displayHeight];
+                            (long)self.configManager.displayWidth, (long)self.configManager.displayHeight];
     
     [alert addButtonWithTitle:@"OK"];
     [alert addButtonWithTitle:@"Change"];
@@ -587,7 +575,7 @@ The app delegate that sets up and starts the virtual machine.
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"Network Settings";
     alert.informativeText = [NSString stringWithFormat:@"Network Enabled: %@\nInterface: %@", 
-                            self.networkEnabled ? @"Yes" : @"No", self.networkInterface];
+                            self.configManager.networkEnabled ? @"Yes" : @"No", self.configManager.networkInterface];
     
     [alert addButtonWithTitle:@"OK"];
     [alert addButtonWithTitle:@"Change"];
@@ -603,7 +591,7 @@ The app delegate that sets up and starts the virtual machine.
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"Storage Settings";
     alert.informativeText = [NSString stringWithFormat:@"Disk Size: %.1f GB", 
-                            (double)self.diskSize / (1024*1024*1024)];
+                            (double)self.configManager.diskSize / (1024*1024*1024)];
     
     [alert addButtonWithTitle:@"OK"];
     [alert addButtonWithTitle:@"Change"];
@@ -619,7 +607,7 @@ The app delegate that sets up and starts the virtual machine.
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"Audio Settings";
     alert.informativeText = [NSString stringWithFormat:@"Audio Enabled: %@", 
-                            self.audioEnabled ? @"Yes" : @"No"];
+                            self.configManager.audioEnabled ? @"Yes" : @"No"];
     
     [alert addButtonWithTitle:@"OK"];
     [alert addButtonWithTitle:@"Change"];
@@ -637,7 +625,7 @@ The app delegate that sets up and starts the virtual machine.
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"Debug Port Settings";
     alert.informativeText = [NSString stringWithFormat:@"Debug Enabled: %@\nDebug Port: %ld", 
-                            self.debugEnabled ? @"Yes" : @"No", (long)self.debugPort];
+                            self.configManager.debugEnabled ? @"Yes" : @"No", (long)self.configManager.debugPort];
     
     [alert addButtonWithTitle:@"OK"];
     [alert addButtonWithTitle:@"Change"];
@@ -653,7 +641,7 @@ The app delegate that sets up and starts the virtual machine.
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"Console Settings";
     alert.informativeText = [NSString stringWithFormat:@"Console Enabled: %@", 
-                            self.consoleEnabled ? @"Yes" : @"No"];
+                            self.configManager.consoleEnabled ? @"Yes" : @"No"];
     
     [alert addButtonWithTitle:@"OK"];
     [alert addButtonWithTitle:@"Change"];
@@ -669,9 +657,9 @@ The app delegate that sets up and starts the virtual machine.
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"Advanced Debug Settings";
     alert.informativeText = [NSString stringWithFormat:@"Panic Device Enabled: %@\nConsole Enabled: %@\nDebug Enabled: %@", 
-                            self.panicDeviceEnabled ? @"Yes" : @"No",
-                            self.consoleEnabled ? @"Yes" : @"No",
-                            self.debugEnabled ? @"Yes" : @"No"];
+                            self.configManager.panicDeviceEnabled ? @"Yes" : @"No",
+                            self.configManager.consoleEnabled ? @"Yes" : @"No",
+                            self.configManager.debugEnabled ? @"Yes" : @"No"];
     
     [alert addButtonWithTitle:@"OK"];
     [alert addButtonWithTitle:@"Change"];
@@ -682,6 +670,26 @@ The app delegate that sets up and starts the virtual machine.
     }
 }
 
+- (IBAction)showAVPBooterSettings:(id)sender
+{
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = @"AVPBooter Settings";
+    alert.informativeText = [NSString stringWithFormat:@"Current AVPBooter Path: %@\nFile Exists: %@", 
+                            self.configManager.avpBooterPath, 
+                            [[NSFileManager defaultManager] fileExistsAtPath:self.configManager.avpBooterPath] ? @"Yes" : @"No"];
+    
+    [alert addButtonWithTitle:@"OK"];
+    [alert addButtonWithTitle:@"Change"];
+    [alert addButtonWithTitle:@"Reset to Default"];
+    
+    NSInteger response = [alert runModal];
+    if (response == NSAlertSecondButtonReturn) {
+        [self showAVPBooterSettingsWindow];
+    } else if (response == NSAlertThirdButtonReturn) {
+        [self resetAVPBooterToDefault];
+    }
+}
+
 // MARK: Settings Window Methods (Placeholder implementations)
 
 - (void)showCPUSettingsWindow
@@ -689,11 +697,11 @@ The app delegate that sets up and starts the virtual machine.
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"CPU Settings";
     alert.informativeText = [NSString stringWithFormat:@"Current CPU Count: %ld\nMaximum Available: %ld", 
-                            (long)self.cpuCount, (long)[[NSProcessInfo processInfo] activeProcessorCount]];
+                            (long)self.configManager.cpuCount, (long)[[NSProcessInfo processInfo] activeProcessorCount]];
     
     // Add text field for CPU count input
     NSTextField *inputField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
-    inputField.stringValue = [NSString stringWithFormat:@"%ld", (long)self.cpuCount];
+    inputField.stringValue = [NSString stringWithFormat:@"%ld", (long)self.configManager.cpuCount];
     inputField.placeholderString = @"Enter CPU count";
     
     alert.accessoryView = inputField;
@@ -707,13 +715,14 @@ The app delegate that sets up and starts the virtual machine.
         NSInteger maxCpu = [[NSProcessInfo processInfo] activeProcessorCount];
         
         if (newCpuCount > 0 && newCpuCount <= maxCpu) {
-            self.cpuCount = newCpuCount;
-            NSLog(@"CPU count updated to: %ld", (long)self.cpuCount);
+            self.configManager.cpuCount = newCpuCount;
+            [self saveConfiguration];
+            NSLog(@"CPU count updated to: %ld", (long)self.configManager.cpuCount);
             
             // Show confirmation
             NSAlert *confirmAlert = [[NSAlert alloc] init];
             confirmAlert.messageText = @"CPU Settings Updated";
-            confirmAlert.informativeText = [NSString stringWithFormat:@"CPU count has been set to %ld cores.\nChanges will take effect on next VM restart.", (long)self.cpuCount];
+            confirmAlert.informativeText = [NSString stringWithFormat:@"CPU count has been set to %ld cores.\nChanges will take effect on next VM restart.", (long)self.configManager.cpuCount];
             [confirmAlert addButtonWithTitle:@"OK"];
             [confirmAlert runModal];
         } else {
@@ -732,7 +741,7 @@ The app delegate that sets up and starts the virtual machine.
     alert.messageText = @"Memory Settings";
     
     UInt64 maxMemory = [[NSProcessInfo processInfo] physicalMemory];
-    double currentMemoryGB = (double)self.memorySize / (1024*1024*1024);
+    double currentMemoryGB = (double)self.configManager.memorySize / (1024*1024*1024);
     double maxMemoryGB = (double)maxMemory / (1024*1024*1024);
     
     alert.informativeText = [NSString stringWithFormat:@"Current Memory: %.1f GB\nMaximum Available: %.1f GB", 
@@ -753,7 +762,8 @@ The app delegate that sets up and starts the virtual machine.
         double newMemoryGB = [inputField.stringValue doubleValue];
         
         if (newMemoryGB > 0 && newMemoryGB <= maxMemoryGB) {
-            self.memorySize = (UInt64)(newMemoryGB * 1024 * 1024 * 1024);
+            self.configManager.memorySize = (UInt64)(newMemoryGB * 1024 * 1024 * 1024);
+            [self saveConfiguration];
             NSLog(@"Memory size updated to: %.1f GB", newMemoryGB);
             
             // Show confirmation
@@ -777,7 +787,7 @@ The app delegate that sets up and starts the virtual machine.
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"Display Settings";
     alert.informativeText = [NSString stringWithFormat:@"Current Resolution: %ld x %ld", 
-                            (long)self.displayWidth, (long)self.displayHeight];
+                            (long)self.configManager.displayWidth, (long)self.configManager.displayHeight];
     
     // Create a view with two text fields for width and height
     NSView *accessoryView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 300, 60)];
@@ -790,7 +800,7 @@ The app delegate that sets up and starts the virtual machine.
     [accessoryView addSubview:widthLabel];
     
     NSTextField *widthField = [[NSTextField alloc] initWithFrame:NSMakeRect(70, 35, 100, 24)];
-    widthField.stringValue = [NSString stringWithFormat:@"%ld", (long)self.displayWidth];
+    widthField.stringValue = [NSString stringWithFormat:@"%ld", (long)self.configManager.displayWidth];
     widthField.placeholderString = @"Width";
     widthField.tag = 100; // Tag for width field
     [accessoryView addSubview:widthField];
@@ -803,7 +813,7 @@ The app delegate that sets up and starts the virtual machine.
     [accessoryView addSubview:heightLabel];
     
     NSTextField *heightField = [[NSTextField alloc] initWithFrame:NSMakeRect(240, 35, 100, 24)];
-    heightField.stringValue = [NSString stringWithFormat:@"%ld", (long)self.displayHeight];
+    heightField.stringValue = [NSString stringWithFormat:@"%ld", (long)self.configManager.displayHeight];
     heightField.placeholderString = @"Height";
     heightField.tag = 101; // Tag for height field
     [accessoryView addSubview:heightField];
@@ -841,14 +851,15 @@ The app delegate that sets up and starts the virtual machine.
         NSInteger newHeight = [heightField.stringValue integerValue];
         
         if (newWidth > 0 && newHeight > 0 && newWidth <= 4096 && newHeight <= 4096) {
-            self.displayWidth = newWidth;
-            self.displayHeight = newHeight;
-            NSLog(@"Display resolution updated to: %ld x %ld", (long)self.displayWidth, (long)self.displayHeight);
+            self.configManager.displayWidth = newWidth;
+            self.configManager.displayHeight = newHeight;
+            [self saveConfiguration];
+            NSLog(@"Display resolution updated to: %ld x %ld", (long)self.configManager.displayWidth, (long)self.configManager.displayHeight);
             
             // Show confirmation
             NSAlert *confirmAlert = [[NSAlert alloc] init];
             confirmAlert.messageText = @"Display Settings Updated";
-            confirmAlert.informativeText = [NSString stringWithFormat:@"Display resolution has been set to %ld x %ld.\nChanges will take effect on next VM restart.", (long)self.displayWidth, (long)self.displayHeight];
+            confirmAlert.informativeText = [NSString stringWithFormat:@"Display resolution has been set to %ld x %ld.\nChanges will take effect on next VM restart.", (long)self.configManager.displayWidth, (long)self.configManager.displayHeight];
             [confirmAlert addButtonWithTitle:@"OK"];
             [confirmAlert runModal];
         } else {
@@ -865,41 +876,44 @@ The app delegate that sets up and starts the virtual machine.
 
 - (IBAction)setDisplayPreset1024x768:(id)sender
 {
-    self.displayWidth = 1024;
-    self.displayHeight = 768;
+    self.configManager.displayWidth = 1024;
+    self.configManager.displayHeight = 768;
+    [self saveConfiguration];
     NSLog(@"Display preset set to 1024x768");
 }
 
 - (IBAction)setDisplayPreset1920x1080:(id)sender
 {
-    self.displayWidth = 1920;
-    self.displayHeight = 1080;
+    self.configManager.displayWidth = 1920;
+    self.configManager.displayHeight = 1080;
+    [self saveConfiguration];
     NSLog(@"Display preset set to 1920x1080");
 }
 
 - (IBAction)setDisplayPreset2560x1440:(id)sender
 {
-    self.displayWidth = 2560;
-    self.displayHeight = 1440;
+    self.configManager.displayWidth = 2560;
+    self.configManager.displayHeight = 1440;
+    [self saveConfiguration];
     NSLog(@"Display preset set to 2560x1440");
 }
 
 - (void)showNetworkSettingsWindow
 {
     // TODO: Implement network settings window
-    NSLog(@"Network Settings Window - Interface: %@", self.networkInterface);
+    NSLog(@"Network Settings Window - Interface: %@", self.configManager.networkInterface);
 }
 
 - (void)showStorageSettingsWindow
 {
     // TODO: Implement storage settings window
-    NSLog(@"Storage Settings Window - Size: %.1f GB", (double)self.diskSize / (1024*1024*1024));
+    NSLog(@"Storage Settings Window - Size: %.1f GB", (double)self.configManager.diskSize / (1024*1024*1024));
 }
 
 - (void)showAudioSettingsWindow
 {
     // TODO: Implement audio settings window
-    NSLog(@"Audio Settings Window - Enabled: %@", self.audioEnabled ? @"Yes" : @"No");
+    NSLog(@"Audio Settings Window - Enabled: %@", self.configManager.audioEnabled ? @"Yes" : @"No");
 }
 
 - (void)showDebugPortSettingsWindow
@@ -907,7 +921,7 @@ The app delegate that sets up and starts the virtual machine.
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = @"Debug Port Settings";
     alert.informativeText = [NSString stringWithFormat:@"Current Debug Port: %ld\nDebug Enabled: %@", 
-                            (long)self.debugPort, self.debugEnabled ? @"Yes" : @"No"];
+                            (long)self.configManager.debugPort, self.configManager.debugEnabled ? @"Yes" : @"No"];
     
     // Create a view with text field and checkbox
     NSView *accessoryView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 300, 80)];
@@ -916,7 +930,7 @@ The app delegate that sets up and starts the virtual machine.
     NSButton *debugCheckbox = [[NSButton alloc] initWithFrame:NSMakeRect(10, 50, 200, 20)];
     [debugCheckbox setButtonType:NSButtonTypeSwitch];
     [debugCheckbox setTitle:@"Enable Debug Stub"];
-    [debugCheckbox setState:self.debugEnabled ? NSControlStateValueOn : NSControlStateValueOff];
+    [debugCheckbox setState:self.configManager.debugEnabled ? NSControlStateValueOn : NSControlStateValueOff];
     debugCheckbox.tag = 200; // Tag for debug checkbox
     [accessoryView addSubview:debugCheckbox];
     
@@ -929,7 +943,7 @@ The app delegate that sets up and starts the virtual machine.
     [accessoryView addSubview:portLabel];
     
     NSTextField *portField = [[NSTextField alloc] initWithFrame:NSMakeRect(100, 25, 100, 24)];
-    portField.stringValue = [NSString stringWithFormat:@"%ld", (long)self.debugPort];
+    portField.stringValue = [NSString stringWithFormat:@"%ld", (long)self.configManager.debugPort];
     portField.placeholderString = @"Port number";
     portField.tag = 201; // Tag for port field
     [accessoryView addSubview:portField];
@@ -963,19 +977,20 @@ The app delegate that sets up and starts the virtual machine.
         NSButton *debugCheckbox = [accessoryView viewWithTag:200];
         NSTextField *portField = [accessoryView viewWithTag:201];
         
-        self.debugEnabled = (debugCheckbox.state == NSControlStateValueOn);
+        self.configManager.debugEnabled = (debugCheckbox.state == NSControlStateValueOn);
         NSInteger newPort = [portField.stringValue integerValue];
         
         if (newPort > 0 && newPort <= 65535) {
-            self.debugPort = newPort;
+            self.configManager.debugPort = newPort;
+            [self saveConfiguration];
             NSLog(@"Debug settings updated - Enabled: %@, Port: %ld", 
-                  self.debugEnabled ? @"Yes" : @"No", (long)self.debugPort);
+                  self.configManager.debugEnabled ? @"Yes" : @"No", (long)self.configManager.debugPort);
             
             // Show confirmation
             NSAlert *confirmAlert = [[NSAlert alloc] init];
             confirmAlert.messageText = @"Debug Settings Updated";
             confirmAlert.informativeText = [NSString stringWithFormat:@"Debug stub: %@\nDebug port: %ld\nChanges will take effect on next VM restart.", 
-                                          self.debugEnabled ? @"Enabled" : @"Disabled", (long)self.debugPort];
+                                          self.configManager.debugEnabled ? @"Enabled" : @"Disabled", (long)self.configManager.debugPort];
             [confirmAlert addButtonWithTitle:@"OK"];
             [confirmAlert runModal];
         } else {
@@ -992,35 +1007,282 @@ The app delegate that sets up and starts the virtual machine.
 
 - (IBAction)setDebugPort8000:(id)sender
 {
-    self.debugPort = 8000;
+    self.configManager.debugPort = 8000;
+    [self saveConfiguration];
     NSLog(@"Debug port preset set to 8000");
 }
 
 - (IBAction)setDebugPort5555:(id)sender
 {
-    self.debugPort = 5555;
+    self.configManager.debugPort = 5555;
+    [self saveConfiguration];
     NSLog(@"Debug port preset set to 5555");
 }
 
 - (IBAction)setDebugPort8890:(id)sender
 {
-    self.debugPort = 8890;
+    self.configManager.debugPort = 8890;
+    [self saveConfiguration];
     NSLog(@"Debug port preset set to 8890");
 }
 
 - (void)showConsoleSettingsWindow
 {
     // TODO: Implement console settings window
-    NSLog(@"Console Settings Window - Enabled: %@", self.consoleEnabled ? @"Yes" : @"No");
+    NSLog(@"Console Settings Window - Enabled: %@", self.configManager.consoleEnabled ? @"Yes" : @"No");
 }
 
 - (void)showAdvancedDebugSettingsWindow
 {
     // TODO: Implement advanced debug settings window
     NSLog(@"Advanced Debug Settings Window - Panic: %@, Console: %@, Debug: %@", 
-          self.panicDeviceEnabled ? @"Yes" : @"No",
-          self.consoleEnabled ? @"Yes" : @"No",
-          self.debugEnabled ? @"Yes" : @"No");
+          self.configManager.panicDeviceEnabled ? @"Yes" : @"No",
+          self.configManager.consoleEnabled ? @"Yes" : @"No",
+          self.configManager.debugEnabled ? @"Yes" : @"No");
+}
+
+- (void)showAVPBooterSettingsWindow
+{
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = @"AVPBooter Settings";
+    alert.informativeText = [NSString stringWithFormat:@"Current AVPBooter Path: %@\nFile Exists: %@", 
+                            self.configManager.avpBooterPath, 
+                            [[NSFileManager defaultManager] fileExistsAtPath:self.configManager.avpBooterPath] ? @"Yes" : @"No"];
+    
+    // Create a view with text field and buttons
+    NSView *accessoryView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 500, 120)];
+    
+    // Path label and field
+    NSTextField *pathLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(10, 90, 100, 20)];
+    pathLabel.stringValue = @"AVPBooter Path:";
+    pathLabel.editable = NO;
+    pathLabel.bordered = NO;
+    pathLabel.backgroundColor = [NSColor clearColor];
+    [accessoryView addSubview:pathLabel];
+    
+    NSTextField *pathField = [[NSTextField alloc] initWithFrame:NSMakeRect(120, 90, 350, 24)];
+    pathField.stringValue = self.configManager.avpBooterPath;
+    pathField.placeholderString = @"Enter AVPBooter path";
+    pathField.tag = 300; // Tag for path field
+    [accessoryView addSubview:pathField];
+    
+    // Browse button
+    NSButton *browseButton = [[NSButton alloc] initWithFrame:NSMakeRect(480, 90, 60, 24)];
+    [browseButton setTitle:@"Browse"];
+    [browseButton setTarget:self];
+    [browseButton setAction:@selector(browseForAVPBooterFile:)];
+    [accessoryView addSubview:browseButton];
+    
+    // Preset buttons
+    NSButton *preset1 = [[NSButton alloc] initWithFrame:NSMakeRect(10, 60, 120, 25)];
+    [preset1 setTitle:@"Default AVPBooter"];
+    [preset1 setTarget:self];
+    [preset1 setAction:@selector(setDefaultAVPBooter:)];
+    [accessoryView addSubview:preset1];
+    
+    NSButton *preset2 = [[NSButton alloc] initWithFrame:NSMakeRect(140, 60, 120, 25)];
+    [preset2 setTitle:@"Custom AVPBooter"];
+    [preset2 setTarget:self];
+    [preset2 setAction:@selector(setCustomAVPBooter:)];
+    [accessoryView addSubview:preset2];
+    
+    // File validation info
+    NSTextField *validationLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(10, 30, 480, 20)];
+    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:self.configManager.avpBooterPath];
+    validationLabel.stringValue = [NSString stringWithFormat:@"File Status: %@", 
+                                  fileExists ? @"✓ File exists" : @"✗ File not found"];
+    validationLabel.editable = NO;
+    validationLabel.bordered = NO;
+    validationLabel.backgroundColor = [NSColor clearColor];
+    validationLabel.textColor = fileExists ? [NSColor systemGreenColor] : [NSColor systemRedColor];
+    validationLabel.tag = 301; // Tag for validation label
+    [accessoryView addSubview:validationLabel];
+    
+    // Help text
+    NSTextField *helpLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(10, 5, 480, 20)];
+    helpLabel.stringValue = @"AVPBooter is the Apple Virtual Platform bootloader used by macOS VMs";
+    helpLabel.editable = NO;
+    helpLabel.bordered = NO;
+    helpLabel.backgroundColor = [NSColor clearColor];
+    helpLabel.font = [NSFont systemFontOfSize:11];
+    helpLabel.textColor = [NSColor secondaryLabelColor];
+    [accessoryView addSubview:helpLabel];
+    
+    alert.accessoryView = accessoryView;
+    
+    [alert addButtonWithTitle:@"OK"];
+    [alert addButtonWithTitle:@"Cancel"];
+    
+    NSInteger response = [alert runModal];
+    if (response == NSAlertFirstButtonReturn) {
+        NSTextField *pathField = [accessoryView viewWithTag:300];
+        NSString *newPath = [pathField.stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        if (newPath.length > 0) {
+            // Validate the AVPBooter path
+            NSError *validationError;
+            BOOL isValid = [self validateAVPBooterPath:newPath error:&validationError];
+            
+            if (isValid) {
+                self.configManager.avpBooterPath = newPath;
+                [self saveConfiguration];
+                NSLog(@"AVPBooter path updated to: %@", self.configManager.avpBooterPath);
+                
+                // Show confirmation
+                NSAlert *confirmAlert = [[NSAlert alloc] init];
+                confirmAlert.messageText = @"AVPBooter Settings Updated";
+                confirmAlert.informativeText = [NSString stringWithFormat:@"AVPBooter path has been set to:\n%@\n\nChanges will take effect on next VM restart.", self.configManager.avpBooterPath];
+                [confirmAlert addButtonWithTitle:@"OK"];
+                [confirmAlert runModal];
+            } else {
+                // Show validation error
+                NSAlert *errorAlert = [[NSAlert alloc] init];
+                errorAlert.messageText = @"Invalid AVPBooter Path";
+                errorAlert.informativeText = validationError.localizedDescription;
+                [errorAlert addButtonWithTitle:@"OK"];
+                [errorAlert runModal];
+            }
+        }
+    }
+}
+
+- (void)resetAVPBooterToDefault
+{
+    self.configManager.avpBooterPath = @"/System/Library/Frameworks/Virtualization.framework/Versions/A/Resources/AVPBooter.vmapple2.bin";
+    [self saveConfiguration];
+    NSLog(@"AVPBooter path reset to default: %@", self.configManager.avpBooterPath);
+    
+    // Show confirmation
+    NSAlert *confirmAlert = [[NSAlert alloc] init];
+    confirmAlert.messageText = @"AVPBooter Reset to Default";
+    confirmAlert.informativeText = [NSString stringWithFormat:@"AVPBooter path has been reset to the default system path:\n%@\n\nChanges will take effect on next VM restart.", self.configManager.avpBooterPath];
+    [confirmAlert addButtonWithTitle:@"OK"];
+    [confirmAlert runModal];
+}
+
+- (IBAction)browseForAVPBooterFile:(id)sender
+{
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    openPanel.title = @"Select AVPBooter File";
+    if (@available(macOS 12.0, *)) {
+        openPanel.allowedContentTypes = @[[UTType typeWithFilenameExtension:@"bin"]];
+    } else {
+        openPanel.allowedFileTypes = @[@"bin"];
+    }
+    openPanel.allowsOtherFileTypes = YES;
+    openPanel.canChooseDirectories = NO;
+    openPanel.canChooseFiles = YES;
+    openPanel.canCreateDirectories = NO;
+    
+    [openPanel beginWithCompletionHandler:^(NSModalResponse result) {
+        if (result == NSModalResponseOK) {
+            NSString *selectedPath = openPanel.URL.path;
+            NSLog(@"Selected AVPBooter file: %@", selectedPath);
+            
+            // Update the text field in the current alert
+            // This is a simplified approach - in a real implementation, you'd want to update the UI properly
+            self.configManager.avpBooterPath = selectedPath;
+            [self saveConfiguration];
+        }
+    }];
+}
+
+- (IBAction)setDefaultAVPBooter:(id)sender
+{
+    self.configManager.avpBooterPath = @"/System/Library/Frameworks/Virtualization.framework/Versions/A/Resources/AVPBooter.vmapple2.bin";
+    [self saveConfiguration];
+    NSLog(@"AVPBooter set to default: %@", self.configManager.avpBooterPath);
+}
+
+- (IBAction)setCustomAVPBooter:(id)sender
+{
+    // This will trigger the file browser
+    [self browseForAVPBooterFile:sender];
+}
+
+- (BOOL)validateAVPBooterPath:(NSString *)avpBooterPath error:(NSError **)error
+{
+    if (!avpBooterPath || avpBooterPath.length == 0) {
+        if (error) {
+            *error = [NSError errorWithDomain:@"AppDelegate" 
+                                        code:1001 
+                                    userInfo:@{NSLocalizedDescriptionKey: @"AVPBooter path cannot be empty"}];
+        }
+        return NO;
+    }
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    // Check if file exists
+    if (![fileManager fileExistsAtPath:avpBooterPath]) {
+        if (error) {
+            *error = [NSError errorWithDomain:@"AppDelegate" 
+                                        code:1002 
+                                    userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"AVPBooter file not found at path: %@", avpBooterPath]}];
+        }
+        return NO;
+    }
+    
+    // Check if it's a file (not a directory)
+    BOOL isDirectory;
+    [fileManager fileExistsAtPath:avpBooterPath isDirectory:&isDirectory];
+    if (isDirectory) {
+        if (error) {
+            *error = [NSError errorWithDomain:@"AppDelegate" 
+                                        code:1003 
+                                    userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Path is a directory, not a file: %@", avpBooterPath]}];
+        }
+        return NO;
+    }
+    
+    // Check file extension (should be .bin)
+    NSString *fileExtension = [avpBooterPath pathExtension];
+    if (![fileExtension isEqualToString:@"bin"]) {
+        if (error) {
+            *error = [NSError errorWithDomain:@"AppDelegate" 
+                                        code:1004 
+                                    userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"File does not have .bin extension: %@", avpBooterPath]}];
+        }
+        return NO;
+    }
+    
+    // Check file size (should be reasonable for a bootloader)
+    NSError *fileError;
+    NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:avpBooterPath error:&fileError];
+    if (fileError) {
+        if (error) {
+            *error = [NSError errorWithDomain:@"AppDelegate" 
+                                        code:1005 
+                                    userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Cannot read file attributes: %@", fileError.localizedDescription]}];
+        }
+        return NO;
+    }
+    
+    NSNumber *fileSize = fileAttributes[NSFileSize];
+    if (fileSize) {
+        NSUInteger sizeInBytes = [fileSize unsignedIntegerValue];
+        // AVPBooter should be at least 1KB and at most 100MB
+        if (sizeInBytes < 1024 || sizeInBytes > 100 * 1024 * 1024) {
+            if (error) {
+                *error = [NSError errorWithDomain:@"AppDelegate" 
+                                            code:1006 
+                                        userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"File size is not reasonable for AVPBooter (%lu bytes): %@", (unsigned long)sizeInBytes, avpBooterPath]}];
+            }
+            return NO;
+        }
+    }
+    
+    // Check if file is readable
+    if (![fileManager isReadableFileAtPath:avpBooterPath]) {
+        if (error) {
+            *error = [NSError errorWithDomain:@"AppDelegate" 
+                                        code:1007 
+                                    userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"File is not readable: %@", avpBooterPath]}];
+        }
+        return NO;
+    }
+    
+    return YES;
 }
 
 @end

@@ -26,7 +26,8 @@
 		8FDABC40270D1DC600D7FC60 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FDABC3F270D1DC600D7FC60 /* Assets.xcassets */; };
 		8FDABC43270D1DC600D7FC60 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8FDABC41270D1DC600D7FC60 /* MainMenu.xib */; };
 		8FDABC45270D1DC600D7FC60 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC44270D1DC600D7FC60 /* main.m */; };
-		8FDABC53270D1F2200D7FC60 /* HyfervisorConfigurationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC4F270D1F0300D7FC60 /* HyfervisorConfigurationHelper.m */; };
+                8FDABC53270D1F2200D7FC60 /* HyfervisorConfigurationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC4F270D1F0300D7FC60 /* HyfervisorConfigurationHelper.m */; };
+                0F358D03D3F743FA853B03BC0A55D6F8 /* HyfervisorConfigManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E868621F7D5E456280DCAC45E11083B2 /* HyfervisorConfigManager.m */; };
 		8FDABC54270D1F2800D7FC60 /* HyfervisorDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC50270D1F0300D7FC60 /* HyfervisorDelegate.m */; };
 		8FDABC5C270D1FFE00D7FC60 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC5B270D1FFE00D7FC60 /* main.m */; };
 		8FDABC64270D20F600D7FC60 /* MacOSRestoreImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FDABC60270D20F600D7FC60 /* MacOSRestoreImage.m */; };
@@ -82,7 +83,9 @@
 		8FDABC42270D1DC600D7FC60 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		8FDABC44270D1DC600D7FC60 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8FDABC4B270D1F0300D7FC60 /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Error.h; sourceTree = "<group>"; };
-		8FDABC4C270D1F0300D7FC60 /* HyfervisorConfigurationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HyfervisorConfigurationHelper.h; sourceTree = "<group>"; };
+                8FDABC4C270D1F0300D7FC60 /* HyfervisorConfigurationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HyfervisorConfigurationHelper.h; sourceTree = "<group>"; };
+                E868621F7D5E456280DCAC45E11083B1 /* HyfervisorConfigManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HyfervisorConfigManager.h; sourceTree = "<group>"; };
+                E868621F7D5E456280DCAC45E11083B2 /* HyfervisorConfigManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HyfervisorConfigManager.m; sourceTree = "<group>"; };
 		8FDABC4D270D1F0300D7FC60 /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path.h; sourceTree = "<group>"; };
 		8FDABC4E270D1F0300D7FC60 /* HyfervisorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HyfervisorDelegate.h; sourceTree = "<group>"; };
 		8FDABC4F270D1F0300D7FC60 /* HyfervisorConfigurationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HyfervisorConfigurationHelper.m; sourceTree = "<group>"; };
@@ -247,17 +250,19 @@
 			path = hyfervisor;
 			sourceTree = "<group>";
 		};
-		8FDABC4A270D1F0300D7FC60 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				8FDABC4B270D1F0300D7FC60 /* Error.h */,
-				8FDABC4C270D1F0300D7FC60 /* HyfervisorConfigurationHelper.h */,
-				8FDABC4F270D1F0300D7FC60 /* HyfervisorConfigurationHelper.m */,
-				8FDABC4E270D1F0300D7FC60 /* HyfervisorDelegate.h */,
-				8FDABC50270D1F0300D7FC60 /* HyfervisorDelegate.m */,
-				8FDABC4D270D1F0300D7FC60 /* Path.h */,
-			);
-			path = Common;
+                8FDABC4A270D1F0300D7FC60 /* Common */ = {
+                        isa = PBXGroup;
+                        children = (
+                                8FDABC4B270D1F0300D7FC60 /* Error.h */,
+                                8FDABC4C270D1F0300D7FC60 /* HyfervisorConfigurationHelper.h */,
+                                8FDABC4F270D1F0300D7FC60 /* HyfervisorConfigurationHelper.m */,
+                                E868621F7D5E456280DCAC45E11083B1 /* HyfervisorConfigManager.h */,
+                                E868621F7D5E456280DCAC45E11083B2 /* HyfervisorConfigManager.m */,
+                                8FDABC4E270D1F0300D7FC60 /* HyfervisorDelegate.h */,
+                                8FDABC50270D1F0300D7FC60 /* HyfervisorDelegate.m */,
+                                8FDABC4D270D1F0300D7FC60 /* Path.h */,
+                        );
+                        path = Common;
 			sourceTree = "<group>";
 		};
 		8FDABC5A270D1FFE00D7FC60 /* InstallationTool */ = {
@@ -437,17 +442,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8FDABC36270D1DC600D7FC60 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8FDABC45270D1DC600D7FC60 /* main.m in Sources */,
-				8FDABC53270D1F2200D7FC60 /* MacOSVirtualMachineConfigurationHelper.m in Sources */,
-				8FDABC54270D1F2800D7FC60 /* MacOSVirtualMachineDelegate.m in Sources */,
-				8FDABC3E270D1DC600D7FC60 /* AppDelegate.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
+                8FDABC36270D1DC600D7FC60 /* Sources */ = {
+                        isa = PBXSourcesBuildPhase;
+                        buildActionMask = 2147483647;
+                        files = (
+                                8FDABC45270D1DC600D7FC60 /* main.m in Sources */,
+                                8FDABC53270D1F2200D7FC60 /* MacOSVirtualMachineConfigurationHelper.m in Sources */,                                                                                                     
+                                8FDABC54270D1F2800D7FC60 /* MacOSVirtualMachineDelegate.m in Sources */,
+                                0F358D03D3F743FA853B03BC0A55D6F8 /* HyfervisorConfigManager.m in Sources */,
+                                8FDABC3E270D1DC600D7FC60 /* AppDelegate.m in Sources */,
+                        );
+                        runOnlyForDeploymentPostprocessing = 0;
+                };
 		8FDABC55270D1FFE00D7FC60 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;

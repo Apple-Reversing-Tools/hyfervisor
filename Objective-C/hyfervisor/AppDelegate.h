@@ -20,6 +20,9 @@ The app delegate that sets up and starts the virtual machine.
 - (void)setupDebugStubForConfiguration:(VZVirtualMachineConfiguration *)configuration;
 - (void)setupPanicDeviceForConfiguration:(VZVirtualMachineConfiguration *)configuration;
 
+// AVPBooter Configuration Actions
+- (IBAction)showAVPBooterSettings:(id)sender;
+
 // Hardware Configuration Actions
 - (IBAction)showCPUSettings:(id)sender;
 - (IBAction)showMemorySettings:(id)sender;
